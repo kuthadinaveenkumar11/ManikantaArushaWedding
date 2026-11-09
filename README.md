@@ -47,17 +47,12 @@ To replace a photograph:
 3. If the cover changes, also set `invitation.gateFold.seam` to `[[50, 0], [50, 100]]`, because the
    seam is traced around the current photograph's die-cut doors.
 
-### Add music
+### Replace the music
 
-The music button stays hidden until a file is set.
+The background music is `public/audio/wedding-music.mp3`. To change the track, overwrite that file and
+keep the name. The floating drum at the bottom right plays and pauses it, and it loops.
 
-1. Put a licensed file in `src/assets/audio/`, for example `wedding-music.mp3`.
-2. In `weddingConfig.ts`, set:
-   ```ts
-   src: new URL('../assets/audio/wedding-music.mp3', import.meta.url).href,
-   ```
-
-Music never autoplays. It starts when a guest taps the button.
+Music never autoplays. It starts when a guest taps the drum.
 
 ### Pin the exact venue location
 
@@ -69,47 +64,55 @@ Google Maps, set `venue.coordinates` to `{ lat: ..., lng: ... }`.
 Overwrite `public/og-image.jpg`, 1200 x 630 px and under 300 KB. WhatsApp caches previews per link, so
 a change can take a while to appear on links already shared.
 
-## Push to GitHub
+## Publish changes
+
+- **Live site:** https://manikanta-anusha-wedding.vercel.app
+- **Repository:** https://github.com/kuthadinaveenkumar11/ManikantaArushaWedding (production branch `main`)
 
 ```bash
+npm run dev                        # check the change locally
+npm run build                      # confirm the production build passes
 git add .
-git commit -m "Wedding invitation website"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-git push -u origin main
+git commit -m "Describe the change"
+git push                           # save it to GitHub
+npx vercel deploy --prod           # put it on the live site
 ```
 
-`.gitignore` already excludes `.env` files, `node_modules` and `dist`. Consider making the repository
-**private**, since it contains family photographs.
+The live address stays the same after every deploy, so links already sent to guests keep working. No
+environment variables are needed. `vercel.json` holds the build settings (Vite, `npm run build`, `dist`)
+and a strict Content Security Policy.
 
-## Deploy to Vercel
+### Publish automatically on every push (optional, one-time setup)
 
-1. At [vercel.com/new](https://vercel.com/new), import the GitHub repository. Vercel reads the build
-   settings from `vercel.json`.
-2. Click **Deploy**. You get a free address such as `your-project.vercel.app`.
+1. Sign in at [vercel.com](https://vercel.com), then open **Account Settings > Authentication > Login
+   Connections** and connect the GitHub account `kuthadinaveenkumar11`.
+2. In this folder, run `npx vercel git connect`.
 
-No environment variables are needed. Vercel provides the production address to the build automatically,
-so sharing links and preview images just work. Set `VITE_SITE_URL` only if you add a custom domain.
+After that, `git push` to `main` updates the live site by itself, and the `npx vercel deploy --prod`
+step above is no longer needed.
 
-`vercel.json` also sets a strict Content Security Policy.
+### Undo a bad update
+
+Run `npx vercel rollback` to put the previous version back on the live address.
 
 ## Check after deploying
 
-- Open the live link on a phone. Open the envelope, then the card, and pinch to zoom into the inner invitation.
+- Open the live link on a phone. Tap Open Invitation and check it lands on the Home View. Then open the card from its section and pinch to zoom into the inner invitation.
 - Send the link to yourself on WhatsApp and check the preview.
 - Tap **Get Directions** and confirm Google Maps finds the correct hall.
+- Tap the drum at the bottom right and check the music plays, then pauses.
 
 ## Project layout
 
 ```
-public/                      Invitation photographs, preview image, icons
+public/                      Invitation photographs, music, preview image, icons
 src/
   config/weddingConfig.ts    All wedding details
   components/                One component per section, plus shared parts
   hooks/                     useCountdown, useAudioPlayer, useScrollSpy
   lib/share.ts               WhatsApp, copy link and Google Maps links
-  pages/Home.tsx             The page, and the opening sequence
-  assets/                    Couple photographs, ornaments, fonts, audio
+  pages/Home.tsx             The page, and the opening envelope
+  assets/                    Couple photographs, ornaments, fonts
   styles/index.css           Design tokens and styles
 vercel.json                  Build, routing and security headers
 ```

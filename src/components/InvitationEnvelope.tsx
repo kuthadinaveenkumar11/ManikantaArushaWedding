@@ -6,7 +6,7 @@ import { GaneshSeal } from './Ornaments';
 type Stage = 'closed' | 'unsealing' | 'rising' | 'leaving';
 
 interface InvitationEnvelopeProps {
-  /** The site begins to show through. */
+  /** The Home View begins to show through. */
   onReveal: () => void;
   /** The envelope has fully gone. */
   onDone: () => void;

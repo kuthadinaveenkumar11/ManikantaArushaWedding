@@ -1,0 +1,6 @@
+# Vercel builds the site itself, so upload only the source.
+.hallmark
+dist
+.env
+.env.*
+!.env.example

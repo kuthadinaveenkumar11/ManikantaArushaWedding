@@ -26,6 +26,7 @@ export function useAudioPlayer() {
     audio.addEventListener('pause', onPause);
     audio.addEventListener('error', onError);
     return () => {
+      audio.pause();
       audio.removeEventListener('playing', onPlaying);
       audio.removeEventListener('waiting', onWaiting);
       audio.removeEventListener('pause', onPause);
@@ -45,6 +46,9 @@ export function useAudioPlayer() {
       audio.pause();
       return;
     }
+
+    // A track that has played to its end starts again from the beginning.
+    if (audio.ended) audio.currentTime = 0;
 
     setStatus('loading');
     try {

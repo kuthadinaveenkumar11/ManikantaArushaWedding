@@ -175,13 +175,10 @@ export const weddingConfig = {
 
   music: {
     /**
-     * The floating music control stays hidden while this is null, so guests
-     * never see a button that cannot play. Add a licensed file to
-     * src/assets/audio/ and point to it, for example:
-     *
-     *   src: new URL('../assets/audio/wedding-music.mp3', import.meta.url).href,
+     * The background music, kept in public/audio/ and served byte for byte. To change
+     * the track, overwrite that file. Set this to null to hide the floating drum.
      */
-    src: null as string | null,
+    src: '/audio/wedding-music.mp3' as string | null,
   },
 
   copy: {
@@ -222,7 +219,7 @@ export const weddingConfig = {
     gallery: {
       heading: 'The card, as printed',
       body: 'Open the original invitation and turn its pages.',
-      action: 'Open Invitation',
+      action: 'Open Card',
       close: 'Close Invitation',
       hintTouch: 'Swipe to turn the page. Pinch or double tap to zoom.',
       hintPointer: 'Use the arrow keys to turn the page. Scroll or double click to zoom.',

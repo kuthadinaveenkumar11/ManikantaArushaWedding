@@ -4,6 +4,7 @@
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R3 V4 · weakest: R, a wedding card earns its ornament, so the temple watermark was cut from the welcome panel and stays on envelope, hero and family */
 /* Hallmark · finish-review: subagent · 8 findings · 7 resolved, 1 partial (date and address fixed, the five cards stay because the brief asks for separate cards) · Floor: sloplint reports 26a on the map iframe, a false positive confirmed by a real Tab test showing a 2px outline, since no CSS can match focus inside an iframe and the check reads style before script can respond */
 /* Hallmark · waive 65 · ivory paper, serif display and gold are pinned by the prompt · the client asked for ivory, cream, antique gold and dark brown taken from their printed wedding card */
+/* Hallmark · waive 47c · envelope built from layered shapes, the opening ritual is the content · the client's brief specifies an envelope that animates open before the wedding invitation appears */
 /* Hallmark · waive 80 · garland, temple and botanical ornaments are decorative SVG the client requested · the brief names temple architecture and floral borders as required wedding card ornament */
 /* Hallmark · dismissed F4 · the stone-band primary is the same button recipe on a dark surface */
 /* Hallmark · dismissed 28a · the lazy image is the card cover far below the fold, the hero photographs load eagerly with high priority */
@@ -11,7 +12,6 @@
 /* Hallmark · waive 44c · twin arches flank the names on a shared balustrade · the arches stand on the railing like the card's twin shrines, so their centre sits below the names */
 /* Hallmark · waive 77 · centred statements on a narrow measure · the welcome line and family names keep the printed card's narrow centred setting, and the countdown holds four figures */
 /* Hallmark · dismissed 59 · the client's brief lists these eleven sections in a fixed order, so none can merge */
-/* Hallmark · waive 47c · envelope built from layered shapes, the opening ritual is the content · the client's brief specifies an envelope that animates open before the wedding invitation appears */
 
 @import 'tailwindcss';
 
@@ -71,6 +71,8 @@
 
   --radius-control: 4px;
   --radius-frame: 6px;
+
+  --shadow-float: 0 2px 8px oklch(24% 0.04 40 / 0.3);
 
   --foil: linear-gradient(
     135deg,
@@ -186,6 +188,7 @@
   html.scroll-locked body {
     overflow: hidden;
   }
+
 }
 
 @media (min-width: 48rem) {
@@ -1141,87 +1144,207 @@
     }
   }
 
-  /* Music */
+  /* Music: a floating drum, bottom right, above the phone dock */
   .music-control {
     position: fixed;
-    right: max(var(--space-sm), var(--safe-right));
-    bottom: calc(var(--dock-height) + var(--safe-bottom) + var(--space-sm));
+    right: max(var(--space-xs), var(--safe-right));
+    bottom: calc(var(--dock-height) + var(--safe-bottom) + var(--space-xs));
     z-index: var(--z-float);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    min-height: 44px;
-    padding: 0 var(--space-md) 0 var(--space-xs);
-    border: 1px solid var(--color-gold);
-    border-radius: 999px;
-    background: var(--color-stone);
-    color: var(--color-on-stone);
-    font-size: var(--text-label);
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background-color var(--dur-short) var(--ease-out);
-  }
-
-  .music-control:hover {
-    background: var(--color-stone-2);
-  }
-
-  .music-control:focus-visible {
-    outline-color: var(--color-kumkum);
-  }
-
-  .music-control__disc {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: 1px solid var(--color-gold);
     border-radius: 50%;
-    background: var(--foil);
-    color: var(--color-stone);
+    background: var(--color-raised);
+    box-shadow: var(--shadow-float);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .music-control:hover {
+      background: var(--color-paper-2);
+    }
+  }
+
+  .music-control:active {
+    transform: translateY(1px);
+  }
+
+  .music-control:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
   }
 
   @media (min-width: 48rem) {
     .music-control {
-      bottom: max(var(--space-lg), var(--safe-bottom));
       right: max(var(--space-lg), var(--safe-right));
+      bottom: max(var(--space-lg), var(--safe-bottom));
     }
   }
 
-  .music-bars {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: var(--space-3xs);
-    height: 14px;
-  }
-
-  .music-bars i {
+  .music-drum {
     display: block;
-    width: 2px;
-    height: 100%;
-    border-radius: 1px;
-    background: var(--color-stone);
-    transform-origin: bottom;
-    animation: music-bar 1100ms ease-in-out infinite;
+    width: 36px;
+    height: 36px;
+    overflow: visible;
   }
 
-  .music-bars i:nth-child(2) {
-    animation-delay: -360ms;
+  .music-drum__body {
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
-  .music-bars i:nth-child(3) {
-    animation-delay: -720ms;
+  .music-drum__shell {
+    fill: var(--color-gold-light);
+    stroke: var(--color-kumkum);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
   }
 
-  @keyframes music-bar {
+  .music-drum__lacing,
+  .music-drum__band {
+    fill: none;
+    stroke: var(--color-kumkum);
+    stroke-linecap: round;
+  }
+
+  .music-drum__lacing {
+    stroke-width: 1.1;
+  }
+
+  .music-drum__band {
+    stroke-width: 2;
+  }
+
+  .music-drum__head {
+    fill: var(--color-gold);
+    stroke: var(--color-kumkum);
+    stroke-width: 1.6;
+  }
+
+  .music-drum__head--far {
+    fill: var(--color-kumkum);
+  }
+
+  .music-drum__waves path {
+    fill: none;
+    stroke: var(--color-kumkum);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+
+  .music-drum__waves,
+  .music-drum__slash {
+    visibility: hidden;
+  }
+
+  .music-drum__slash-halo,
+  .music-drum__slash-line {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .music-drum__slash-halo {
+    stroke: var(--color-raised);
+    stroke-width: 5.5;
+  }
+
+  .music-drum__slash-line {
+    stroke: var(--color-kumkum);
+    stroke-width: 2.6;
+  }
+
+  .music-control[data-status='idle'] .music-drum__slash,
+  .music-control[data-status='paused'] .music-drum__slash,
+  .music-control[data-status='error'] .music-drum__slash {
+    visibility: visible;
+  }
+
+  /* The drum only moves while the music is actually playing. */
+  .music-control[data-status='playing'] .music-drum__waves {
+    visibility: visible;
+  }
+
+  .music-control[data-status='playing'] .music-drum__body {
+    animation: drum-beat 1200ms ease-in-out infinite;
+  }
+
+  .music-control[data-status='playing'] .music-drum__waves path {
+    animation: drum-wave 1200ms ease-in-out infinite;
+  }
+
+  .music-control[data-status='playing'] .music-drum__waves path:nth-child(2) {
+    animation-delay: 200ms;
+  }
+
+  @keyframes drum-beat {
     0%,
     100% {
-      transform: scaleY(0.35);
+      transform: rotate(-5deg);
     }
     50% {
-      transform: scaleY(1);
+      transform: rotate(5deg) translateY(-1px);
     }
+  }
+
+  @keyframes drum-wave {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .music-control__badge {
+    position: absolute;
+    top: calc(-1 * var(--space-2xs));
+    left: calc(-1 * var(--space-2xs));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-stone);
+    color: var(--color-gold-light);
+  }
+
+  .music-control__label {
+    position: absolute;
+    bottom: 0;
+    right: calc(100% + var(--space-xs));
+    padding: var(--space-2xs) var(--space-xs);
+    border-radius: var(--radius-control);
+    background: var(--color-stone);
+    color: var(--color-on-stone);
+    font-size: var(--text-label);
+    line-height: 1.25;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-out);
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    .music-control:hover .music-control__label {
+      opacity: 1;
+      transition-delay: 800ms;
+    }
+  }
+
+  .music-control:focus-visible .music-control__label,
+  .music-control[data-announcing='true'] .music-control__label,
+  .music-control[data-status='error'] .music-control__label {
+    opacity: 1;
+    transition-delay: 0ms;
   }
 
   /* Opening envelope */
@@ -1409,9 +1532,14 @@
       transform: none;
     }
 
-    .music-bars i,
+    .music-control[data-status='playing'] .music-drum__body,
+    .music-control[data-status='playing'] .music-drum__waves path,
     .spin {
       animation: none;
+    }
+
+    .music-control__label {
+      transition: none;
     }
   }
 }
