@@ -50,9 +50,11 @@ To replace a photograph:
 ### Replace the music
 
 The background music is `public/audio/wedding-music.mp3`. To change the track, overwrite that file and
-keep the name. The floating drum at the bottom right plays and pauses it, and it loops.
+keep the name. It loops, and the floating drum at the bottom right pauses and resumes it.
 
-Music never autoplays. It starts when a guest taps the drum.
+The music starts when a guest taps **Open Invitation**, so it is already playing on the Home View. Browsers
+only allow sound to start from a tap. A direct link to a section skips that screen, so there the music
+waits for a tap on the drum.
 
 ### Pin the exact venue location
 
@@ -100,7 +102,7 @@ Run `npx vercel rollback` to put the previous version back on the live address.
 - Open the live link on a phone. Tap Open Invitation and check it lands on the Home View. Then open the card from its section and pinch to zoom into the inner invitation.
 - Send the link to yourself on WhatsApp and check the preview.
 - Tap **Get Directions** and confirm Google Maps finds the correct hall.
-- Tap the drum at the bottom right and check the music plays, then pauses.
+- Tap Open Invitation and check the music is playing on the Home View, then tap the drum to pause it.
 
 ## Project layout
 

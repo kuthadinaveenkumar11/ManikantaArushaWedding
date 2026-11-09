@@ -3,8 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export type AudioStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'error';
 
 /**
- * Drives one <audio> element. Playback only ever starts from `toggle`, which is
- * called from a tap, so mobile browsers allow it and nothing autoplays.
+ * Drives one <audio> element. Browsers only allow sound to start from a tap or
+ * click, so `play` and `toggle` must be called directly from one. Calling them
+ * after a timer or animation would be refused on phones.
  */
 export function useAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -34,19 +35,12 @@ export function useAudioPlayer() {
     };
   }, []);
 
-  const toggle = useCallback(async () => {
+  const play = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    // A failed play() can leave `paused` false, so check for failure first:
-    // the element stays failed until it is loaded again, and a tap means retry.
-    if (audio.error) {
-      audio.load();
-    } else if (!audio.paused) {
-      audio.pause();
-      return;
-    }
-
+    // A failed element stays failed until it is loaded again.
+    if (audio.error) audio.load();
     // A track that has played to its end starts again from the beginning.
     if (audio.ended) audio.currentTime = 0;
 
@@ -54,11 +48,27 @@ export function useAudioPlayer() {
     try {
       await audio.play();
     } catch (error) {
+      const reason = error instanceof DOMException ? error.name : '';
       // A quick pause interrupts play() with an AbortError, which is not a failure.
-      if (error instanceof DOMException && error.name === 'AbortError') return;
-      setStatus('error');
+      if (reason === 'AbortError') return;
+      // The browser refused to start the sound. The drum still offers it, so this is not a failure.
+      setStatus(reason === 'NotAllowedError' ? 'idle' : 'error');
     }
   }, []);
 
-  return { audioRef, status, toggle };
+  const toggle = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // A failed play() can leave `paused` false, so a tap after a failure always means retry.
+    if (!audio.error && !audio.paused) {
+      audio.pause();
+      return;
+    }
+    void play();
+  }, [play]);
+
+  return { audioRef, status, play, toggle };
 }
+
+export type AudioPlayer = ReturnType<typeof useAudioPlayer>;

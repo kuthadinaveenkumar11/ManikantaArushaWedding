@@ -6,6 +6,8 @@ import { GaneshSeal } from './Ornaments';
 type Stage = 'closed' | 'unsealing' | 'rising' | 'leaving';
 
 interface InvitationEnvelopeProps {
+  /** The guest tapped Open Invitation. Runs during the tap, so it may start sound. */
+  onOpen: () => void;
   /** The Home View begins to show through. */
   onReveal: () => void;
   /** The envelope has fully gone. */
@@ -18,7 +20,7 @@ const EASE = [0.45, 0.05, 0.25, 1] as const;
 const UNSEAL_MS = 900;
 const RISE_MS = 950;
 
-export function InvitationEnvelope({ onReveal, onDone }: InvitationEnvelopeProps) {
+export function InvitationEnvelope({ onOpen, onReveal, onDone }: InvitationEnvelopeProps) {
   const { couple, event, copy } = weddingConfig;
   const reduced = useReducedMotion();
   const [stage, setStage] = useState<Stage>('closed');
@@ -36,7 +38,10 @@ export function InvitationEnvelope({ onReveal, onDone }: InvitationEnvelopeProps
     return undefined;
   }, [stage, onReveal]);
 
-  const open = () => setStage(reduced ? 'leaving' : 'unsealing');
+  const open = () => {
+    onOpen();
+    setStage(reduced ? 'leaving' : 'unsealing');
+  };
   const isOpen = stage !== 'closed';
   const flapBehind = stage === 'rising' || stage === 'leaving';
 

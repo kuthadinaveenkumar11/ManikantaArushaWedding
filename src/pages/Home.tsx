@@ -12,6 +12,7 @@ import { SiteNav } from '../components/SiteNav';
 import { VenueSection } from '../components/VenueSection';
 import { WeddingDetails } from '../components/WeddingDetails';
 import { WelcomeSection } from '../components/WelcomeSection';
+import { useAudioPlayer } from '../hooks/useAudioPlayer';
 
 /** A guest opens the envelope, and the Home View shows through as it lifts. */
 type Phase = 'envelope' | 'revealing' | 'site';
@@ -56,6 +57,7 @@ function useLandingPosition() {
 export default function Home() {
   const [phase, setPhase] = useState<Phase>(() => (startsOnSection() ? 'site' : 'envelope'));
   const opened = phase !== 'envelope';
+  const player = useAudioPlayer();
 
   useLandingPosition();
 
@@ -79,7 +81,9 @@ export default function Home() {
         </a>
       )}
 
-      {phase !== 'site' && <InvitationEnvelope onReveal={onReveal} onDone={onDone} />}
+      {phase !== 'site' && (
+        <InvitationEnvelope onOpen={() => void player.play()} onReveal={onReveal} onDone={onDone} />
+      )}
 
       <div className="site-frame" inert={!opened}>
         <SiteNav />
@@ -97,7 +101,7 @@ export default function Home() {
         <Footer />
       </div>
 
-      <MusicPlayer visible={opened} />
+      <MusicPlayer visible={opened} player={player} />
     </>
   );
 }

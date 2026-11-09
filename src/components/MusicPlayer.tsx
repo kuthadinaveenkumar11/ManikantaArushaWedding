@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Loader2, RotateCcw } from 'lucide-react';
 import { weddingConfig } from '../config/weddingConfig';
-import { useAudioPlayer, type AudioStatus } from '../hooks/useAudioPlayer';
+import type { AudioPlayer, AudioStatus } from '../hooks/useAudioPlayer';
 
 const STATUS_TEXT: Record<AudioStatus, string> = {
   idle: 'Play music',
@@ -50,12 +50,13 @@ function DrumIcon() {
 
 /**
  * Stays mounted for the whole visit, above every section, with one audio element,
- * so the music keeps going while guests scroll and jump between sections. It
- * renders nothing if no audio file is set in the wedding config.
+ * so the music keeps going while guests scroll and jump between sections. Open
+ * Invitation starts it, and this drum pauses and resumes it. It renders nothing if
+ * no audio file is set in the wedding config.
  */
-export function MusicPlayer({ visible }: { visible: boolean }) {
+export function MusicPlayer({ visible, player }: { visible: boolean; player: AudioPlayer }) {
   const { src } = weddingConfig.music;
-  const { audioRef, status, toggle } = useAudioPlayer();
+  const { audioRef, status, toggle } = player;
   const [announcing, setAnnouncing] = useState(false);
 
   useEffect(() => {
