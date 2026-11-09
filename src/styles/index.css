@@ -1,0 +1,1417 @@
+/* Hallmark · shape: gate-fold panels · genre: editorial · theme: custom · job: attend · idea: "The site behaves like the family's printed gate-fold card: its doors really open, its twin arches frame the couple, every panel is printed in the card's own inks." · vibe: "printed temple card, foil on ivory paper" · copy: verbatim
+ * paper: oklch(96.2% 0.016 98) · accent: oklch(62% 0.105 78) · display: Cormorant Upright · body: Mukta · hero: triptych, the names between twin arches on a balustrade, after the card's twin shrines · nav: bottom tab dock on phones, links split around a centred monogram from tablet up · footer: dark stone band holding the share actions · imagery: the couple's photographs and the original card photographs · signature: the printed cover's doors opening along their real die-cut seam
+ * axes: light/roman-serif/warm · posture: full palette (ivory field, celadon wash, stone band, gold signal), pinned by the client's card and brief · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R3 V4 · weakest: R, a wedding card earns its ornament, so the temple watermark was cut from the welcome panel and stays on envelope, hero and family */
+/* Hallmark · finish-review: subagent · 8 findings · 7 resolved, 1 partial (date and address fixed, the five cards stay because the brief asks for separate cards) · Floor: sloplint reports 26a on the map iframe, a false positive confirmed by a real Tab test showing a 2px outline, since no CSS can match focus inside an iframe and the check reads style before script can respond */
+/* Hallmark · waive 65 · ivory paper, serif display and gold are pinned by the prompt · the client asked for ivory, cream, antique gold and dark brown taken from their printed wedding card */
+/* Hallmark · waive 80 · garland, temple and botanical ornaments are decorative SVG the client requested · the brief names temple architecture and floral borders as required wedding card ornament */
+/* Hallmark · dismissed F4 · the stone-band primary is the same button recipe on a dark surface */
+/* Hallmark · dismissed 28a · the lazy image is the card cover far below the fold, the hero photographs load eagerly with high priority */
+/* Hallmark · waive 39b · page-thumb is a 270px photograph button · each card thumbnail is a tappable picture of a printed page rather than a text control */
+/* Hallmark · waive 44c · twin arches flank the names on a shared balustrade · the arches stand on the railing like the card's twin shrines, so their centre sits below the names */
+/* Hallmark · waive 77 · centred statements on a narrow measure · the welcome line and family names keep the printed card's narrow centred setting, and the countdown holds four figures */
+/* Hallmark · dismissed 59 · the client's brief lists these eleven sections in a fixed order, so none can merge */
+/* Hallmark · waive 47c · envelope built from layered shapes, the opening ritual is the content · the client's brief specifies an envelope that animates open before the wedding invitation appears */
+
+@import 'tailwindcss';
+
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+
+  /* Sampled from the printed card: ivory stock, celadon cover wash, maroon-brown ink, foil gold. */
+  --color-paper: oklch(96.2% 0.016 98);
+  --color-paper-2: oklch(93.4% 0.022 112);
+  --color-paper-3: oklch(90.5% 0.026 118);
+  --color-raised: oklch(98.2% 0.01 95);
+  --color-ink: oklch(27% 0.055 35);
+  --color-ink-2: oklch(38% 0.05 40);
+  --color-muted: oklch(48% 0.04 50);
+  --color-rule: oklch(80% 0.05 85);
+  --color-gold: oklch(62% 0.105 78);
+  --color-gold-ink: oklch(45% 0.085 68);
+  --color-gold-light: oklch(84% 0.095 88);
+  --color-gold-deep: oklch(50% 0.095 65);
+  --color-kumkum: oklch(47% 0.16 28);
+  --color-focus: oklch(47% 0.16 28);
+  --color-stone: oklch(24% 0.04 40);
+  --color-stone-2: oklch(31% 0.045 42);
+  --color-on-stone: oklch(95% 0.02 90);
+  --color-on-stone-2: oklch(85% 0.03 85);
+  --color-blush: oklch(72% 0.08 25);
+
+  --font-display: 'Cormorant Upright', 'Cormorant', Georgia, serif;
+  --font-body: 'Mukta', ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.5rem, 1.9rem + 2.6vw, 4.25rem);
+  --text-section: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  --text-statement: clamp(1.75rem, 1.35rem + 1.7vw, 2.75rem);
+  --text-title: clamp(1.625rem, 1.4rem + 0.8vw, 2.125rem);
+  --text-lede: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --text-label: 0.9375rem;
+  --text-tab: 0.75rem;
+}
+
+:root {
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --container: 75rem;
+
+  --nav-height: 4.25rem;
+  --dock-height: 3.75rem;
+
+  --radius-control: 4px;
+  --radius-frame: 6px;
+
+  --foil: linear-gradient(
+    135deg,
+    var(--color-gold-deep),
+    var(--color-gold-light) 50%,
+    var(--color-gold)
+  );
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+
+  --z-raised: 10;
+  --z-sticky-nav: 300;
+  --z-float: 350;
+  --z-modal: 400;
+  --z-skip: 500;
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+@font-face {
+  font-family: 'Cormorant Upright';
+  src: url('../assets/fonts/cormorant-upright-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  src: url('../assets/fonts/mukta-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  src: url('../assets/fonts/mukta-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    overflow-x: clip;
+    background: var(--color-paper);
+    scroll-padding-top: var(--space-md);
+    scrollbar-color: var(--color-gold) var(--color-paper-2);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    overflow-x: clip;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 400;
+    line-height: 1.6;
+    font-variant-numeric: lining-nums;
+    font-synthesis: none;
+    caret-color: var(--color-kumkum);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3 {
+    min-width: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.08;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-size: var(--text-section);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  ::selection {
+    background: var(--color-gold-light);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .on-stone :focus-visible,
+  .on-stone:focus-visible {
+    outline-color: var(--color-gold-light);
+  }
+
+  html.scroll-locked,
+  html.scroll-locked body {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 48rem) {
+  html {
+    scroll-padding-top: calc(var(--nav-height) + var(--space-md));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Layout */
+  .wrap {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: max(var(--gutter), var(--safe-left)) max(var(--gutter), var(--safe-right));
+  }
+
+  .section {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--space-section);
+  }
+
+  .on-stone {
+    background: var(--color-stone);
+    color: var(--color-on-stone);
+  }
+
+  /* A foil rule marks the change of paper where a dark band begins and ends. */
+  .section.on-stone::before,
+  .section.on-stone::after {
+    position: absolute;
+    inset-inline: 0;
+    height: var(--space-2xs);
+    background: var(--foil);
+    content: '';
+  }
+
+  .section.on-stone::before {
+    top: 0;
+  }
+
+  .section.on-stone::after {
+    bottom: 0;
+  }
+
+  .site-frame {
+    padding-bottom: calc(var(--dock-height) + var(--safe-bottom));
+  }
+
+  @media (min-width: 48rem) {
+    .site-frame {
+      padding-bottom: 0;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    top: calc(-1 * var(--space-3xl));
+    left: var(--space-md);
+    z-index: var(--z-skip);
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .skip-link:focus-visible {
+    top: var(--space-md);
+  }
+
+  /* Controls */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    min-height: 48px;
+    padding: 0 var(--space-lg);
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      border-color var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-primary {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-paper);
+    box-shadow:
+      inset 0 0 0 3px var(--color-ink),
+      inset 0 0 0 4px var(--color-gold);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-ink-2);
+  }
+
+  .btn-quiet {
+    background: transparent;
+    border-color: var(--color-gold-deep);
+    color: var(--color-ink);
+  }
+
+  .btn-quiet:hover:not(:disabled) {
+    background: var(--color-paper-2);
+  }
+
+  .on-stone .btn-primary {
+    background: var(--color-gold-light);
+    border-color: var(--color-gold-light);
+    color: var(--color-stone);
+    box-shadow:
+      inset 0 0 0 3px var(--color-gold-light),
+      inset 0 0 0 4px var(--color-gold-deep);
+  }
+
+  .on-stone .btn-primary:hover:not(:disabled) {
+    background: var(--color-raised);
+  }
+
+  .on-stone .btn-quiet {
+    border-color: var(--color-gold);
+    color: var(--color-on-stone);
+  }
+
+  .on-stone .btn-quiet:hover:not(:disabled) {
+    background: var(--color-stone-2);
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-on-stone);
+    cursor: pointer;
+    transition: background-color var(--dur-short) var(--ease-out);
+  }
+
+  .icon-btn:hover:not(:disabled) {
+    background: var(--color-stone-2);
+  }
+
+  .icon-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* Printed ornament */
+  .garland {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+    height: 84px;
+    background: url('../assets/images/ornaments/garland.svg') repeat-x top center / auto 84px;
+    pointer-events: none;
+  }
+
+  @media (min-width: 64rem) {
+    .garland {
+      height: 104px;
+      background-size: auto 104px;
+    }
+  }
+
+  .temple-watermark {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: -1;
+    height: min(62%, 30rem);
+    background: url('../assets/images/ornaments/temple.svg') no-repeat bottom center / auto 100%;
+    opacity: var(--watermark-opacity, 0.2);
+    pointer-events: none;
+  }
+
+  .balustrade {
+    height: 44px;
+    background: url('../assets/images/ornaments/balustrade.svg') repeat-x center / auto 44px;
+  }
+
+  @media (min-width: 64rem) {
+    .balustrade {
+      height: 64px;
+      background-size: auto 64px;
+    }
+  }
+
+  .botanical {
+    height: 138px;
+    background: url('../assets/images/ornaments/botanical.svg') repeat-x bottom center / auto 138px;
+  }
+
+  @media (min-width: 64rem) {
+    .botanical {
+      height: 210px;
+      background-size: auto 210px;
+    }
+  }
+
+  .seal {
+    display: block;
+    flex-shrink: 0;
+    width: var(--seal-size, 7rem);
+    height: var(--seal-size, 7rem);
+    padding: var(--space-2xs);
+    border-radius: 50%;
+    background: var(--foil);
+  }
+
+  .seal img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  /* Temple arch frame */
+  .arch {
+    position: relative;
+    display: block;
+    padding: var(--space-2xs);
+    border-radius: 999px 999px var(--radius-frame) var(--radius-frame);
+    background: var(--foil);
+    transition: transform var(--dur-long) var(--ease-out);
+  }
+
+  .arch__mat {
+    padding: var(--space-xs);
+    border-radius: inherit;
+    background: var(--color-raised);
+  }
+
+  .arch__window {
+    overflow: hidden;
+    border-radius: inherit;
+    background: var(--color-paper-3);
+  }
+
+  .arch__window img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .arch__finial {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: clamp(1.25rem, 13%, 2.25rem);
+    color: var(--color-gold-deep);
+    transform: translate(-50%, -72%);
+  }
+
+  @media (hover: hover) {
+    .arch--lift:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  /* Hero */
+  .hero {
+    --watermark-opacity: 0.13;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    overflow: clip;
+  }
+
+  .hero__grid {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'text text'
+      'groom bride'
+      'meta meta';
+    column-gap: var(--space-sm);
+    row-gap: var(--space-md);
+    align-content: center;
+    padding-top: calc(5.25rem + var(--safe-top));
+    padding-bottom: var(--space-md);
+  }
+
+  .hero__text {
+    grid-area: text;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .hero__meta {
+    grid-area: meta;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .hero__arch-groom {
+    grid-area: groom;
+    min-width: 0;
+  }
+
+  .hero__arch-bride {
+    grid-area: bride;
+    min-width: 0;
+  }
+
+  .hero__blessing {
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-gold-ink);
+  }
+
+  .hero__names {
+    margin-top: var(--space-md);
+    font-size: var(--text-display);
+    line-height: 1.02;
+  }
+
+  .hero__names span {
+    display: block;
+  }
+
+  .hero__amp {
+    margin-block: var(--space-2xs);
+    font-size: 0.72em;
+    color: var(--color-gold-ink);
+  }
+
+  .hero__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-2xs);
+    margin-bottom: var(--space-md);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.25rem + 0.6vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  .hero__facts > li {
+    padding-inline: var(--space-sm);
+    white-space: nowrap;
+  }
+
+  .hero__facts > li:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .hero__facts > li:nth-child(2) {
+    text-align: right;
+    border-right: 1px solid var(--color-gold);
+  }
+
+  .hero__facts > li:nth-child(3) {
+    text-align: left;
+  }
+
+  @media (min-width: 40rem) {
+    .hero__facts {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero__facts > li:nth-child(n) {
+      border-left: 1px solid var(--color-gold);
+      border-right: 0;
+    }
+
+    .hero__facts > li:first-child {
+      border-left: 0;
+    }
+  }
+
+  /* Short phones and in-app browsers: smaller arches keep the date on the first screen. */
+  @media (max-width: 40rem) and (max-height: 47.5rem) {
+    .hero__arch-groom,
+    .hero__arch-bride {
+      width: 70%;
+    }
+
+    .hero__arch-groom {
+      justify-self: end;
+    }
+
+    .hero__arch-bride {
+      justify-self: start;
+    }
+  }
+
+  /* Safari on an iPhone with its toolbars showing leaves about 660px. */
+  @media (max-width: 40rem) and (max-height: 43.75rem) {
+    .hero__grid {
+      padding-top: calc(4.75rem + var(--safe-top));
+      row-gap: var(--space-xs);
+    }
+
+    .hero__names {
+      margin-top: var(--space-xs);
+      font-size: 2.25rem;
+    }
+
+    .hero__arch-groom,
+    .hero__arch-bride {
+      width: 60%;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      min-height: calc(100dvh - var(--nav-height));
+    }
+
+    .hero__names {
+      font-size: clamp(3rem, min(5vw, 9.2dvh), 6rem);
+    }
+
+    .hero__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr) minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        'groom text bride'
+        'groom meta bride';
+      column-gap: var(--space-xl);
+      row-gap: var(--space-lg);
+      align-content: center;
+      padding-top: var(--space-2xl);
+    }
+
+    .hero__text {
+      align-self: end;
+    }
+
+    .hero__meta {
+      align-self: start;
+    }
+
+    .hero__arch-groom,
+    .hero__arch-bride {
+      align-self: end;
+    }
+  }
+
+  /* Large screens: the hero alone grows, so the triptych still fills its screen. */
+  @media (min-width: 96rem) {
+    .hero__grid {
+      max-width: 95rem;
+    }
+  }
+
+  /* Information cards */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 48rem) {
+    .detail-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .detail-card {
+      grid-column: span 2;
+    }
+
+    .detail-card--wide {
+      grid-column: span 3;
+    }
+  }
+
+  .detail-card {
+    position: relative;
+    padding: var(--space-lg);
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-frame);
+    background: var(--color-raised);
+  }
+
+  .detail-card::after {
+    position: absolute;
+    inset: var(--space-2xs);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--space-3xs);
+    content: '';
+    pointer-events: none;
+  }
+
+  .detail-card dt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--color-gold-ink);
+  }
+
+  .detail-card dd {
+    margin-top: var(--space-xs);
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 600;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .detail-card dd.detail-card__prose {
+    font-family: var(--font-body);
+    font-size: var(--text-lede);
+    font-weight: 400;
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .detail-card--wide dd {
+    font-size: var(--text-statement);
+  }
+
+  .detail-card__note {
+    display: block;
+    margin-top: var(--space-2xs);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-ink-2);
+  }
+
+  /* Countdown */
+  .count-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .count-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: var(--space-2xs);
+    border-left: 1px solid var(--color-gold-deep);
+  }
+
+  .count-cell:first-child {
+    border-left: 0;
+  }
+
+  .count-value {
+    display: grid;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 1.75rem + 7vw, 7rem);
+    font-weight: 600;
+    font-variant-numeric: lining-nums tabular-nums;
+    line-height: 1.05;
+    color: var(--color-gold-light);
+  }
+
+  .count-value > * {
+    grid-area: 1 / 1;
+    text-align: center;
+  }
+
+  /* Map */
+  .map-frame {
+    padding: var(--space-xs);
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-frame);
+    background: var(--color-raised);
+  }
+
+  .map-frame__inner {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--space-3xs);
+    background: var(--color-paper-3);
+  }
+
+  .map-frame__resting {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .map-frame__inner[data-focused='true'] {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .map-frame iframe {
+    display: block;
+    width: 100%;
+    height: clamp(18rem, 40vw, 28rem);
+    border: 0;
+    border-radius: var(--space-3xs);
+  }
+
+  /* Card photographs */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'cover'
+      'actions';
+    gap: var(--space-lg);
+  }
+
+  .gallery-grid__head {
+    grid-area: head;
+  }
+
+  .gallery-grid__cover {
+    grid-area: cover;
+    align-self: start;
+  }
+
+  .gallery-grid__actions {
+    grid-area: actions;
+  }
+
+  @media (min-width: 64rem) {
+    .gallery-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-rows: 1fr auto auto 1fr;
+      grid-template-areas:
+        'cover .'
+        'cover head'
+        'cover actions'
+        'cover .';
+      column-gap: var(--space-2xl);
+    }
+  }
+
+  .card-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-frame);
+  }
+
+  .card-frame {
+    padding: var(--space-2xs);
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-frame);
+  }
+
+  .page-thumb {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-2xs) var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--color-gold-deep);
+    border-radius: var(--radius-frame);
+    background: transparent;
+    color: var(--color-on-stone);
+    font-size: var(--text-label);
+    line-height: 1.25;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color var(--dur-short) var(--ease-out);
+  }
+
+  .page-thumb:hover {
+    background: var(--color-stone-2);
+  }
+
+  /* A square for both pages, so a tall cover and a wide spread line up uncropped. */
+  .page-thumb__image {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+  }
+
+  .page-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Card viewer */
+  .card-viewer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: var(--color-stone);
+    color: var(--color-on-stone);
+  }
+
+  .card-viewer::backdrop {
+    background: var(--color-stone);
+  }
+
+  .card-viewer__layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: calc(var(--safe-top) + var(--space-xs)) max(var(--space-sm), var(--safe-right))
+      calc(var(--safe-bottom) + var(--space-xs)) max(var(--space-sm), var(--safe-left));
+    gap: var(--space-xs);
+  }
+
+  .card-viewer__stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    container-type: size;
+  }
+
+  .card-slide {
+    position: absolute;
+    inset: 0;
+  }
+
+  .zoom-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .zoom-stage:active {
+    cursor: grabbing;
+  }
+
+  .zoom-stage img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: min(100cqw, calc(100cqh * var(--page-ratio)));
+    height: auto;
+    aspect-ratio: var(--page-ratio);
+    object-fit: contain;
+    outline: 1px solid var(--color-gold);
+    -webkit-user-drag: none;
+  }
+
+  .gate-doors {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .gate-doors__box {
+    position: relative;
+    width: min(100cqw, calc(100cqh * var(--page-ratio)));
+    aspect-ratio: var(--page-ratio);
+  }
+
+  .gate-doors__box[data-state='closed'] {
+    outline: 1px solid var(--color-gold);
+  }
+
+  .card-viewer__hint {
+    font-size: var(--text-label);
+    line-height: 1.25;
+    color: var(--color-on-stone-2);
+    text-align: center;
+  }
+
+  /* A phone held sideways needs the height for the photograph. */
+  @media (max-height: 30rem) {
+    .card-viewer__hint {
+      display: none;
+    }
+  }
+
+  .gate-door {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .gate-door img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -webkit-user-drag: none;
+  }
+
+  .spin {
+    animation: spin 900ms linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Navigation */
+  .site-nav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: var(--z-sticky-nav);
+    padding-bottom: var(--safe-bottom);
+    border-top: 1px solid var(--color-gold);
+    background: var(--color-raised);
+  }
+
+  .site-nav__list {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    padding-inline: var(--safe-left) var(--safe-right);
+  }
+
+  .site-nav__monogram {
+    display: none;
+  }
+
+  .site-nav__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3xs);
+    min-height: var(--dock-height);
+    color: var(--color-ink-2);
+    font-size: var(--text-tab);
+    font-weight: 400;
+    line-height: 1.1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--dur-short) var(--ease-out);
+  }
+
+  .site-nav__link[aria-current='true'] {
+    color: var(--color-kumkum);
+    font-weight: 600;
+  }
+
+  .site-nav__link:hover {
+    color: var(--color-kumkum);
+  }
+
+  @media (min-width: 48rem) {
+    .site-nav {
+      position: sticky;
+      inset: 0 0 auto;
+      border-top: 0;
+      border-bottom: 1px solid var(--color-gold);
+      padding-bottom: 0;
+    }
+
+    .site-nav__list {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      height: var(--nav-height);
+    }
+
+    .site-nav__monogram {
+      display: block;
+      order: 3;
+      margin-inline: var(--space-lg);
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--color-ink);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .site-nav__item:nth-of-type(n + 4) {
+      order: 4;
+    }
+
+    /* Equal widths on both sides are what keep the monogram on the page's centre line. */
+    .site-nav__item {
+      width: 5rem;
+    }
+
+    .site-nav__link {
+      flex-direction: row;
+      width: 100%;
+      min-height: 44px;
+      padding-inline: var(--space-2xs);
+      font-size: 1rem;
+    }
+
+    .site-nav__link svg {
+      display: none;
+    }
+  }
+
+  /* Music */
+  .music-control {
+    position: fixed;
+    right: max(var(--space-sm), var(--safe-right));
+    bottom: calc(var(--dock-height) + var(--safe-bottom) + var(--space-sm));
+    z-index: var(--z-float);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+    padding: 0 var(--space-md) 0 var(--space-xs);
+    border: 1px solid var(--color-gold);
+    border-radius: 999px;
+    background: var(--color-stone);
+    color: var(--color-on-stone);
+    font-size: var(--text-label);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--dur-short) var(--ease-out);
+  }
+
+  .music-control:hover {
+    background: var(--color-stone-2);
+  }
+
+  .music-control:focus-visible {
+    outline-color: var(--color-kumkum);
+  }
+
+  .music-control__disc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--foil);
+    color: var(--color-stone);
+  }
+
+  @media (min-width: 48rem) {
+    .music-control {
+      bottom: max(var(--space-lg), var(--safe-bottom));
+      right: max(var(--space-lg), var(--safe-right));
+    }
+  }
+
+  .music-bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: var(--space-3xs);
+    height: 14px;
+  }
+
+  .music-bars i {
+    display: block;
+    width: 2px;
+    height: 100%;
+    border-radius: 1px;
+    background: var(--color-stone);
+    transform-origin: bottom;
+    animation: music-bar 1100ms ease-in-out infinite;
+  }
+
+  .music-bars i:nth-child(2) {
+    animation-delay: -360ms;
+  }
+
+  .music-bars i:nth-child(3) {
+    animation-delay: -720ms;
+  }
+
+  @keyframes music-bar {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+
+  /* Opening envelope */
+  .envelope-screen {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    overflow: hidden;
+    padding: calc(var(--safe-top) + var(--space-xl)) var(--space-md)
+      calc(var(--safe-bottom) + var(--space-xl));
+    background: var(--color-paper);
+    overscroll-behavior: contain;
+  }
+
+  .envelope-screen .botanical {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: -1;
+  }
+
+  .envelope {
+    position: relative;
+    width: min(82vw, 23.75rem, calc((100dvh - 15.5rem) * 0.75));
+    aspect-ratio: 3 / 4;
+    container-type: inline-size;
+  }
+
+  .env-back {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: var(--radius-frame);
+    background: var(--color-paper-3);
+  }
+
+  .env-card {
+    position: absolute;
+    inset: 3% 5% 2%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: 7cqw 5cqw;
+    border: 1px solid var(--color-gold);
+    border-radius: var(--space-2xs);
+    background: var(--color-raised);
+    text-align: center;
+  }
+
+  .env-card__heading {
+    font-family: var(--font-display);
+    font-size: 8cqw;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--color-gold-ink);
+  }
+
+  .env-card__names {
+    font-family: var(--font-display);
+    font-size: 6.5cqw;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .env-front {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 6cqw 8cqw;
+    overflow: hidden;
+    border-radius: var(--radius-frame);
+    background: var(--color-raised);
+    clip-path: polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
+    text-align: center;
+  }
+
+  .env-front::before {
+    position: absolute;
+    inset: 40% 0 0;
+    z-index: -1;
+    background: url('../assets/images/ornaments/temple.svg') no-repeat bottom center / 150% auto;
+    opacity: 0.16;
+    content: '';
+  }
+
+  .env-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    color: var(--color-gold);
+    pointer-events: none;
+  }
+
+  .env-border {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-frame);
+    pointer-events: none;
+  }
+
+  .env-names {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 10.5cqw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.08;
+  }
+
+  .env-amp {
+    display: block;
+    font-size: 0.75em;
+    color: var(--color-gold-ink);
+  }
+
+  .env-date {
+    margin-top: 2.5cqw;
+    font-size: clamp(0.9375rem, 4.6cqw, 1.125rem);
+    color: var(--color-ink-2);
+  }
+
+  .env-flap {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 48%;
+    transform-style: preserve-3d;
+  }
+
+  .env-flap__face {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .env-flap__face--front {
+    background: var(--color-paper-2);
+  }
+
+  .env-flap__face--back {
+    background: var(--foil);
+    transform: rotateX(180deg);
+  }
+
+  .env-seal {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    z-index: 7;
+    width: 34%;
+    translate: -50% -50%;
+    --seal-size: 100%;
+  }
+
+  .env-seal .seal {
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn,
+    .icon-btn,
+    .arch,
+    .page-thumb,
+    .site-nav__link,
+    .music-control {
+      transition: none;
+    }
+
+    .arch--lift:hover {
+      transform: none;
+    }
+
+    .music-bars i,
+    .spin {
+      animation: none;
+    }
+  }
+}

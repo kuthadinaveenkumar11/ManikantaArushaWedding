@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+*.log
+
+# Secrets stay out of the repository. Only the template is committed.
+.env
+.env.*
+!.env.example
+
+# Local tooling
+.vercel
+.hallmark
